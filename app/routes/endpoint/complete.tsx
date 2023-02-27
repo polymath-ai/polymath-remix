@@ -33,7 +33,7 @@ export async function action({ request }: ActionArgs) {
 
   if (servers.length > 0) {
     if (!clientOptions.servers) clientOptions.servers = [];
-    clientOptions.servers = clientOptions.servers.concat(servers);
+    clientOptions.servers.push(...servers);
   }
   let client = new Polymath(clientOptions);
 
