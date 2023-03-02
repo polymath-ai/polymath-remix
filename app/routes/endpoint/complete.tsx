@@ -16,13 +16,13 @@ export async function action({ request }: ActionArgs) {
   const body = await request.formData();
   const query = body.get("query");
 
-  const otherOptions: Record<string, any> = {};
+  const askOptions: Record<string, any> = {};
   const servers = [];
   for (const pair of body.entries()) {
     if (pair[0] === "server") {
       servers.push(pair[1]);
     } else if (pair[0] !== "query") {
-      otherOptions[pair[0]] = pair[1];
+      askOptions[pair[0]] = pair[1];
     }
   }
 
@@ -37,7 +37,7 @@ export async function action({ request }: ActionArgs) {
   }
   let client = new Polymath(clientOptions);
 
-  if (!client.valid()) {
+  if (!client.validate()) {
     client.servers = [];
     if (polymathHostConfig.server_options) {
       polymathHostConfig.server_options.forEach((server) => {
@@ -50,13 +50,20 @@ export async function action({ request }: ActionArgs) {
     }
   }
 
+  let completionOptions: any = polymathHostConfig.completions_options;
+
   // results will contain:
   // {
   //     bits: polymathResults.bits(),
   //     infos: polymathResults.infoSortedBySimilarity(),
   //     completion: response.data.choices[0].text.trim(),
   // }
-  let results = await client.completion(query, undefined, otherOptions);
+  let results = await client.completion(
+    query,
+    undefined,
+    askOptions,
+    completionOptions
+  );
 
   return json(results);
 }
