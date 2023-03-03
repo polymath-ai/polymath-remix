@@ -5,7 +5,7 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "build/index.js",
   // publicPath: "/build/",
-  serverDependenciesToBundle: ["@polymath-ai/client"],
+  serverDependenciesToBundle: ["@polymath-ai/client", "globby", "slash"],
   future: {
     unstable_tailwind: true,
   },
